@@ -15,7 +15,7 @@ from unirAudioVideo import unir_video_audio
 #nombreImagen=''
 
 # Configuramos la API de Google Gemini
-GOOGLE_API_KEY = 'AIzaSyAnpiIg_zMV7U_LRgJ266dxFMzPGTiTcOQ'
+GOOGLE_API_KEY = variables.apiKeyGemini
 genai.configure(api_key=GOOGLE_API_KEY)
 
 model = genai.GenerativeModel('gemini-pro')
@@ -75,7 +75,7 @@ def procesar():
     # Imprimir las variables en la consola y devolver una respuesta
     print_variables()
     
-    crearImagenIA()
+    #crearImagenIA()
     
     #chroma()
     

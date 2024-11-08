@@ -5,4 +5,5 @@ VariableAnimal = ""
 VariableFondo = ""
 VariableDescripcionFondo = ""
 VariableDescripcionAnimal = ""
+apiKeyGemini="AIzaSyAnpiIg_zMV7U_LRgJ266dxFMzPGTiTcOQ"
 
