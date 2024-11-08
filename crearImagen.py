@@ -1,5 +1,5 @@
 import requests
-
+import variables 
 
 
 
@@ -15,7 +15,7 @@ def send_to_colab(img_url, mask_url, prompt,nombre):
       None
   """
 
-  colab_url = "https://773b-34-16-166-146.ngrok-free.app/process"  # Update with your Colab URL
+  colab_url = variables.conexionColab+"/process"  # Update with your Colab URL
   data = {
       "img_url": img_url,
       "mask_url": mask_url,
@@ -29,7 +29,7 @@ def send_to_colab(img_url, mask_url, prompt,nombre):
     print(f"Imagen procesada en: {result_url}")
 
     # Replace with your desired download logic (consider error handling)
-    download_image(result_url, "C:/Users/MOISES NEGRETE/Documents/Proyectos/Eduai/EduAi/imagenesIA/"+nombre)
+    download_image(result_url, variables.miLocal+nombre)
   else:
     print(f"Error, Comunicarse con MOISES NEGRETE 3122642360: {response.status_code}")
 

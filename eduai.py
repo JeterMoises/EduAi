@@ -75,7 +75,7 @@ def procesar():
     # Imprimir las variables en la consola y devolver una respuesta
     print_variables()
     
-    #crearImagenIA()
+    crearImagenIA()
     
     #chroma()
     
