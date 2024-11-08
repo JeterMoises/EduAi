@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template_string, jsonify, send_from_directory
 import google.generativeai as genai
 import variables  # Importamos las variables globales desde variables.py
+import datosPrivados
 import os
 from crearImagen import send_to_colab  # Import the function
 
@@ -15,7 +16,7 @@ from unirAudioVideo import unir_video_audio
 #nombreImagen=''
 
 # Configuramos la API de Google Gemini
-GOOGLE_API_KEY = variables.apiKeyGemini
+GOOGLE_API_KEY = datosPrivados.apiKeyGemini
 genai.configure(api_key=GOOGLE_API_KEY)
 
 model = genai.GenerativeModel('gemini-pro')
