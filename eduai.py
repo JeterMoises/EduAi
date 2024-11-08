@@ -78,17 +78,17 @@ def procesar():
     
     crearImagenIA()
     
-    #chroma()
+    chroma()
     
-    #remplazo_fotogramas()
+    remplazo_fotogramas()
     
-    #unirFotogramas()
+    unirFotogramas()
     
-    #unirVideos()
+    unirVideos()
     
-    #sobrePonerAudio()
+    sobrePonerAudio()
     
-    #unirVideoAudio()
+    unirVideoAudio()
     
     # Aquí debes agregar la lógica de procesamiento del video
     video_url = './videosCompletos/video_con_audioFINALOficial.mp4'  # Ruta relativa para el archivo
