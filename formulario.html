@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAi</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Chewy', cursive;
+            background-color: #d0e7ff; 
+            text-align: center;
+            color: #1e90ff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column; /* Cambiado a columna */
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+        .character {
+            width: 300px; 
+            margin: 0 20px;
+            transition: transform 0.3s;
+        }
+        .character:hover {
+            transform: scale(1.2); 
+        }
+        form {
+            background-color: #f0f8ff; 
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0px 0px 20px rgba(30, 144, 255, 0.5); 
+            display: inline-block;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+        h2 {
+            color: #1e90ff; 
+            font-size: 28px;
+        }
+        textarea {
+            font-size: 18px;
+            border-radius: 20px;
+            padding: 15px;
+            border: 2px solid #1e90ff;
+            width: 90%;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus {
+            border-color: #87cefa; 
+        }
+        input[type="submit"] {
+            background-color: #add8e6; 
+            color: #1e90ff;
+            font-size: 20px;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            cursor: pointer;
+            box-shadow: 0px 5px 0px #1e90ff;
+            transition: all 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #87cefa; 
+            transform: scale(1.1);
+        }
+        input[type="submit"]:active {
+            box-shadow: none;
+            transform: translateY(5px);
+        }
+        #processingMessage {
+            display: none;
+            font-size: 22px;
+            color: #1e90ff;
+            margin-top: 20px;
+        }
+        #loadingGif {
+            display: none;
+            margin-top: 5px;
+           
+        }
+        #videoContainer {
+            margin-top: 30px;
+        }
+        #videoProcesado {
+            border: 5px solid #1e90ff;
+            border-radius: 20px;
+            box-shadow: 0px 0px 15px rgba(30, 144, 255, 0.5); 
+        }
+        audio {
+            display: none;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            form {
+                width: 90%;
+                padding: 15px;
+            }
+            textarea {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="./static/images/hola.png" alt="Personaje divertido" class="character">
+
+        <!-- Formulario con la función de procesar con fetch -->
+        <form id="formulario" action="/procesar" method="POST" onsubmit="procesarFormulario(event)">
+            <h2>EduAi</h2>
+            <label for="promp"><i class="fas fa-pencil-alt"></i> Escribe tu consulta:</label><br>
+            <textarea id="promp" name="promp" rows="4" cols="50"></textarea><br><br>
+            <input type="submit" value="Enviar">
+        </form>
+
+        <img src="./static/images/celebrar.png" alt="Personaje divertido" class="character">
+    </div>
+
+    <div id="processingMessage">Procesando video...</div>
+    <img id="loadingGif" src="./static/images/cargando.gif" alt="Cargando...">
+
+    <!-- Contenedor de video que será mostrado después de procesar -->
+    <div id="videoContainer" style="display: none;">
+        <h3>Video Procesado:</h3>
+        <video id="videoProcesado" width="600" controls>
+            <source id="videoSource" src="" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+
+    <!-- Sonido de clic -->
+    <audio id="clickSound" src="click-sound.mp3"></audio>
+
+    <script>
+        function procesarFormulario(event) {
+            event.preventDefault();  // Prevenir el envío por defecto del formulario
+            
+            // Reproducir sonido de clic
+            document.getElementById("clickSound").play();
+
+            // Mostrar el mensaje de procesando y el GIF de carga
+            var processingMessage = document.getElementById("processingMessage");
+            var loadingGif = document.getElementById("loadingGif");
+            processingMessage.style.display = "block";
+            loadingGif.style.display = "block";
+
+            var formData = new FormData(document.getElementById("formulario"));
+
+            fetch("/procesar", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.video_url) {
+                    setTimeout(() => { // Simular un tiempo de procesamiento
+                        actualizarVideo(data.video_url);
+                    }, 2000); // Cambia este valor para simular más o menos tiempo
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function actualizarVideo(videoUrl) {
+            // Ocultar el mensaje de procesando y el GIF de carga
+            var processingMessage = document.getElementById("processingMessage");
+            var loadingGif = document.getElementById("loadingGif");
+            processingMessage.style.display = "none";
+            loadingGif.style.display = "none";
+            
+            // Actualizar el elemento de video existente con la URL del video devuelto por el servidor
+            var videoElement = document.getElementById("videoProcesado");
+            var videoSource = document.getElementById("videoSource");
+            
+            videoSource.src = videoUrl;  // Actualizar la fuente del video
+            videoElement.load();  // Cargar el nuevo video
+            
+            // Mostrar el contenedor de video
+            document.getElementById("videoContainer").style.display = "block";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
